@@ -1,6 +1,5 @@
 package com.waterflower.myrxjava.functions;
 
-import com.waterflower.myrxjava.R;
 import com.waterflower.myrxjava.publisher.MyObservable;
 import com.waterflower.myrxjava.subscriber.MySubscriber;
 
@@ -11,19 +10,19 @@ import com.waterflower.myrxjava.subscriber.MySubscriber;
  * Describe :
  */
 
-public class MapOnSubscribe<T>  implements MyObservable.MyOnSubscribe<T>{
+public class MapOnSubscribe<T,R>  implements MyObservable.MyOnSubscribe<R>{
 
-    private final MapTransformer transformer;
-    private final MyObservable sourceObservable;
+    private final MyObservable<T> sourceObservable;
+    private final MapTransformer<? super T,? extends R> transformer;
 
-    public MapOnSubscribe(MapTransformer<T,R> transformer, MyObservable sourceObservable) {
-        this.transformer = transformer;
+    public MapOnSubscribe(MyObservable<T> sourceObservable, MapTransformer<? super T,? extends R> transformer) {
         this.sourceObservable = sourceObservable;
+        this.transformer = transformer;
     }
 
     @Override
-    public void onCall(MySubscriber<? super T> subscriber) {
-        sourceObservable.onSubscribe(new MapSubscriber(subscriber,transformer));
+    public void call(MySubscriber<? super R> subscriber) {
+        sourceObservable.subscribe(new MapSubscriber<R,T>(subscriber,transformer));
     }
 
 

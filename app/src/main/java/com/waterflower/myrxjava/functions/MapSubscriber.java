@@ -14,9 +14,9 @@ public class MapSubscriber<T, R> extends MySubscriber<R> {
 
 
     final MySubscriber<? super T> actualSubscriber;
-    final MapTransformer<R, T> transformer;
+    final MapTransformer<? super R,? extends T> transformer;
 
-    public MapSubscriber(MySubscriber<? super T> actualSubscriber, MapTransformer<R, T> transformer) {
+    public MapSubscriber(MySubscriber<? super T> actualSubscriber, MapTransformer<? super R,? extends T> transformer) {
         this.actualSubscriber = actualSubscriber;
         this.transformer = transformer;
     }
@@ -32,7 +32,7 @@ public class MapSubscriber<T, R> extends MySubscriber<R> {
     }
 
     @Override
-    public void onNext(R r) {
+    public void onNext( R r) {
         actualSubscriber.onNext(transformer.transform(r));
     }
 }
