@@ -78,7 +78,7 @@ public class MyObservable<T> {
                 scheduler.createWorker().schedule(new Runnable() {
                     @Override
                     public void run() {
-                        LogUtils.i("Run in the io thread : " + Thread.currentThread().getName());
+                        LogUtils.i("Run in io thread : " + Thread.currentThread().getName());
                         MyObservable.this.onSubscriber.call(subscriber);
                     }
                 });
